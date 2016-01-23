@@ -59,10 +59,54 @@ class GameBoard:
             elif player_rounds == check_rounds:
                 winner_list.append(player)
 
-        print("Your winners are: ")
+        verb_tense = ""
+        if len(winner_list) == 1:
+            verb_tense = " is"
+        else:
+            verb_tense = "s are"
+        print("Your winner" + verb_tense + ": ")
         for winner in winner_list:
-            print(winner.player_name())
+            print(winner.player_name)
         print("Congratulations!!!")
+
+        file = open('alltimewinners.txt', 'r')
+        winners_dictionary = {}
+        for line in file:
+            print("Line test: " + line)
+            line = line.strip("\n")
+            line_list = line.split(" , ")
+            winners_dictionary[line_list[0]] = line_list[1]
+
+        file.close()
+        file = open("alltimewinners.txt", "w")
+
+        keys = winners_dictionary.keys()
+
+        for winner in winner_list:
+            if winner.is_comp is True:
+                winner_name = "Computer"
+            else:
+                winner_name = winner.player_name
+
+            new = True
+            for key in keys:
+                if winner_name == key:
+                    winners_dictionary[key] = str(int(winners_dictionary.get(key)) + 1)
+                    new = False
+                    break
+
+            if new == True:
+                winners_dictionary[winner_name] = 1
+
+        winners_writing_list = []
+        for key in winners_dictionary:
+            winner_string = str(key) + " , " + str(winners_dictionary.get(key)) + "\n"
+            winners_writing_list.append(winner_string)
+
+        for line in winners_writing_list:
+            file.write(line)
+
+        file.close()
 
         # This allows the players to decide if they want to continue playing.
         # This is bounced back up to the gameStart in Main, which bounces it back up to gameOpening to see if the
@@ -70,6 +114,7 @@ class GameBoard:
         eh = ErrorHandling()
         continue_choice_text = "\n1: Yes\n2: No\nWould you like to continue? "
         continue_choice = eh.range_integer_input_checking(continue_choice_text, 1, 2)
+
         if continue_choice == 1:
             return True
         elif continue_choice == 2:

@@ -1,9 +1,10 @@
 from src.GameBoard import GameBoard
 from src.Players import Players
 from src.ErrorHandling import ErrorHandling
+from operator import itemgetter
+
 # TODO List:
 # Musts:
-# Add AI
 # Read/write results
 
 
@@ -20,24 +21,74 @@ class Main:
             game_continue = True
 
             # The players can choose to either read the rules of Press Your Bunco or else play the game.
-            choice_text = "\n1: Play Press Your Bunco. \n2: See the rules.\nChoose an option: "
-            choice = eh.range_integer_input_checking(choice_text, 1, 2)
+            choice_text = "\n1: Play Press Your Bunco. \n2: See the rules.\n3: See the all time winners list" \
+                          "\nChoose an option: "
+            choice = eh.range_integer_input_checking(choice_text, 1, 3)
             if choice == 1:
                 game_continue = self.game_start()
             elif choice == 2:
                 self.press_your_bunco_rules()
+            elif choice == 3:
+                self.all_time_winner_list()
 
             if game_continue is False:
                 break
 
+    # displays the all time winners.
+    # Took advice from
+    # http://stackoverflow.com/questions/4174941/how-to-sort-a-list-of-lists-by-a-specific-index-of-the-inner-list
+    def all_time_winner_list(self):
+        print("\nList of Winners, All Time.")
+
+        file = open('alltimewinners.txt', 'r')
+
+        list_of_list_of_winners = []
+        for line in file:
+            line = line.strip("\n")
+            line_list = line.split(" , ")
+            list_of_list_of_winners.append(line_list)
+
+        list_of_high_scores = []
+
+        for winner in list_of_list_of_winners:
+            list_of_high_scores.append(winner[1])
+
+        list_of_high_scores.sort()
+        list_of_high_scores.reverse()
+
+        winner_name_list = []
+
+        for high_score in list_of_high_scores:
+            for winner in list_of_list_of_winners:
+                if high_score == winner[1]:
+                    new_name = True
+                    for name in winner_name_list:
+                        if name == winner[0]:
+                            new_name = False
+                            break
+                    if new_name is True:
+                        print(winner[0] + ": " + winner[1])
+                        winner_name_list.append(winner[0])
+
+
+        file.close()
+
     # Prints the game rules.
     def press_your_bunco_rules(self):
-        print("The object of press your bunco is to win more rounds than your opponents. There are 6 rounds to bunco. In each of the rounds, the goal to be the first to score 21 points. "
-              "\nThe way to score points is to roll the round number. Each successful roll is worth a point for the rolling player. A ""Bunco"" occurs when a player rolls three successful rolls at once. This results in automatically winning the round."
-              "\nIn Press Your Bunco, you are given the option to choose the number of dice that your roll, between 3 and 7. The more dice you roll, the more points you can score on your turn. But be careful! Should you get three or more of any combination that isn't the round number, you lose all of your points for the round.")
+        print("The object of press your bunco is to win more rounds than your opponents. There are 6 rounds to bunco. "
+              "In each of the rounds, the goal to be the first to score 21 points. "
+              "\nThe way to score points is to roll the round number. "
+              "Each successful roll is worth a point for the rolling player."
+              "A ""Bunco"" occurs when a player rolls three successful rolls at once. "
+              "This results in automatically winning the round."
+              "\nIn Press Your Bunco, you are given the option to choose the number of dice that your roll,"
+              " between 3 and 7. "
+              "The more dice you roll, the more points you can score on your turn. "
+              "But be careful! Should you get three or more of any combination that isn't the round number, "
+              "you lose all of your points for the round.")
 
-
-    # This function starts the game by setting up the game with the appropriate number of players, and then allowing them to add themselves to the game.
+    # This function starts the game by setting up the game with the appropriate number of players, and
+    # then allowing them to add themselves to the game.
     def game_start(self):
 
         eh = ErrorHandling()
