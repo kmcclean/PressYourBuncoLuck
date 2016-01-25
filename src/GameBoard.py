@@ -59,7 +59,6 @@ class GameBoard:
             elif player_rounds == check_rounds:
                 winner_list.append(player)
 
-        verb_tense = ""
         if len(winner_list) == 1:
             verb_tense = " is"
         else:
@@ -69,6 +68,7 @@ class GameBoard:
             print(winner.player_name)
         print("Congratulations!!!")
 
+        # opens up the winners file to edit it to reflect the new winner.
         file = open('alltimewinners.txt', 'r')
         winners_dictionary = {}
         for line in file:
@@ -82,6 +82,7 @@ class GameBoard:
 
         keys = winners_dictionary.keys()
 
+        # adds the winner's name to the list of winners. If the winner has won before, increases their number of wins.
         for winner in winner_list:
             if winner.is_comp is True:
                 winner_name = "Computer"
@@ -95,7 +96,7 @@ class GameBoard:
                     new = False
                     break
 
-            if new == True:
+            if new is True:
                 winners_dictionary[winner_name] = 1
 
         winners_writing_list = []
@@ -109,7 +110,7 @@ class GameBoard:
         file.close()
 
         # This allows the players to decide if they want to continue playing.
-        # This is bounced back up to the gameStart in Main, which bounces it back up to gameOpening to see if the
+        # This is bounced back up to the gameStart in Main, which bounces it back up to game_opening to see if the
         # game will be replayed.
         eh = ErrorHandling()
         continue_choice_text = "\n1: Yes\n2: No\nWould you like to continue? "
