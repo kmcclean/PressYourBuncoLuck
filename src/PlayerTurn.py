@@ -39,7 +39,7 @@ class PlayerTurn:
         dice_amount_text = name + ", please select the number of dice you wish to use: "
 
         # TODO This should have an error handling range of 3-7.
-        dice_amount = eh.range_integer_input_checking(dice_amount_text, 0, 500)
+        dice_amount = eh.range_integer_input_checking(dice_amount_text, 3, 7)
 
         self.roll_results(dice_amount, self.player_turn_player)
 
