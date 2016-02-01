@@ -1,12 +1,6 @@
 from src.GameBoard import GameBoard
 from src.Players import Players
 from src.ErrorHandling import ErrorHandling
-from operator import itemgetter
-
-# TODO List:
-# Musts:
-# Read/write results
-
 
 class Main:
 
@@ -103,7 +97,7 @@ class Main:
         # This adds the number of players to the player_list, creating a new instance of each player.
         while counter < human_players:
             name_text = "What is player " + str((counter + 1)) + "'s name? "
-            name = eh.non_blank_string(name_text)
+            name = eh.nonblank_string(name_text)
             p = Players(name, 0, 0, False)
             player_list.append(p)
 

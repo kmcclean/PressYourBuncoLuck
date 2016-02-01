@@ -1,3 +1,4 @@
 Kevin , 2
-Lisa , 2
 John , 4
+Boyd , 1
+Lisa , 2
